@@ -1,24 +1,27 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import DateHead from './components/DateHead';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import AddTodo from './components/AddTodo';
+import Empty from './components/Empty';
 
 function App() {
+  const today = new Date();
   return (
-    <SafeAreaView>
-      <View>
-        <Text>TodoApp</Text>
-      </View>
-    </SafeAreaView>
+    <SafeAreaProvider>
+      <SafeAreaView edges={['bottom']} style={styles.block}>
+        <DateHead date={today} />
+        <Empty />
+        <AddTodo />
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  block: {
+    flex: 1,
+  },
+});
 
 export default App;
