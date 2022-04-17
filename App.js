@@ -5,13 +5,13 @@ import {
     KeyboardAvoidingView,
     Platform,
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 
 import DateHead from './components/DateHead';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AddTodo from './components/AddTodo';
 import Empty from './components/Empty';
 import TodoList from './components/TodoList';
+import TodoStorage from './storages/TodoStorages';
 
 function App() {
     const today = new Date();
@@ -20,15 +20,15 @@ function App() {
         {id: 2, text: '리액트 네이티브 기초 공부', done: false},
         {id: 3, text: 'Todo 리스트 만들기', done: false},
     ]);
+
+    // 불러오기
     useEffect(() => {
-        async function save() {
-            try {
-                await AsyncStorage.setItem('todos', JSON.stringify(todos));
-            } catch (error) {
-                console.log('todos 저장에 실패했습니다');
-            }
-        }
-        save();
+        TodoStorage.get().then(setTodos).catch(console.error);
+    }, []);
+
+    // 저장하기
+    useEffect(() => {
+        TodoStorage.set(todos).catch(console.error);
     }, [todos]);
 
     const onInsert = text => {
